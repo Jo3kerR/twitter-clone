@@ -1,0 +1,112 @@
+.tweetBox {
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--twitter-border-color);
+  padding-right: 10px;
+  position: relative;
+}
+.tweetBox .emoji-mart {
+  position: absolute;
+}
+
+.tweetBox input {
+  background-color: black;
+  color: white;
+}
+
+.tweetBox textarea {
+  background-color: black;
+  color: white;
+  white-space: pre-wrap !important;
+}
+
+.tweetBox > form {
+  display: flex;
+  flex-direction: column;
+}
+.tweetBox__input {
+  padding: 10px;
+  display: flex;
+}
+
+.tweetBox__input > textarea {
+  /* flex: 1; */
+  margin-left: 20px;
+  font-size: 20px;
+  border: none;
+}
+
+.tweetBox__inputImage {
+  border: none;
+  padding: 10px;
+}
+
+.tweetBox__tweetButton {
+  border: none !important;
+  color: white !important;
+  margin-top: 20px !important;
+  margin-left: auto !important;
+  height: 40px !important;
+  font-size: 20px !important;
+  width: 90px;
+  border-radius: 30px !important;
+  background-color: var(--twitter-color) !important;
+  font-weight: 700 !important;
+  text-transform: inherit !important;
+}
+
+.tweetBox__buttons {
+  display: flex;
+  align-items: center;
+  margin-left: 80px;
+}
+
+.tweetBox__attachment {
+  cursor: pointer;
+  color: var(--twitter-color);
+  margin-right: 20px;
+}
+
+.grow-wrap {
+  /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
+  display: grid;
+  flex: 1;
+}
+
+.grow-wrap::after {
+  /* Note the weird space! Needed to preventy jumpy behavior */
+  content: attr(data-replicated-value) " ";
+  /* This is how textarea text behaves */
+  white-space: pre-wrap;
+  /* Hidden from view, clicks, and screen readers */
+  visibility: hidden;
+}
+
+.grow-wrap > textarea {
+  /* You could leave this, but after a user resizes, then it ruins the auto sizing */
+  resize: none;
+  /* Firefox shows scrollbar on growth, you can hide like this. */
+  overflow: hidden;
+}
+
+.grow-wrap::after,
+.grow-wrap > textarea {
+  /* Identical styling required!! */
+  border: 1px solid black;
+  padding: 0.5rem;
+  font: inherit;
+  /* Place on top of each other */
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.emoji-mart {
+  position: relative;
+  left: 200px;
+  z-index: 1000;
+}
+
+@media only screen and (max-width: 430px) {
+  .tweetBox__tweetButton {
+    font-size: 15px !important;
+    height: 30px !important;
+  }
+}
