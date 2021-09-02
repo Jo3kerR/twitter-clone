@@ -3,6 +3,11 @@
   max-width: 380px;
 }
 
+.sticky {
+  position: sticky;
+  top: 10px;
+}
+
 .widgets__input {
   display: flex;
   align-items: center;

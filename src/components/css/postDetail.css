@@ -1,4 +1,4 @@
-.feed {
+.postDetail {
   flex: 0.6;
   border-right: 0.5px solid var(--twitter-border-color);
   color: white;
@@ -9,39 +9,29 @@
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
-.feed::-webkit-scrollbar {
+.postDetail::-webkit-scrollbar {
   display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
-.feed {
+.postDetail {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
 
 .feed__header {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  border: 0.5px solid var(--twitter-border-color);
-  padding: 10px 20px;
-  background-color: black;
-}
-
-.feed__header > h2 {
-  font-size: 25px;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 
 @media only screen and (max-width: 770px) {
-  .feed {
+  .postDetail {
     width: 5vw;
   }
 }
 
 @media only screen and (max-width: 1100px) {
-  .feed {
+  .postDetail {
     flex: 1;
   }
 }

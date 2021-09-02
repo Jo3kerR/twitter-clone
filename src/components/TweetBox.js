@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./css/tweetBox.css";
 import { Avatar, Button } from "@material-ui/core";
 import db from "../firebase";
@@ -10,9 +10,9 @@ import {
 } from "@material-ui/icons";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
-import OnOutsiceClick from "react-outclick";
+import { useOuterClick } from "react-outer-click";
 
-function TweetBox() {
+function TweetBox({ isComment, id, handleClose, isModal }) {
   const [tweetMessage, setTweetMessage] = useState("");
   const [tweetImage, setTweetImage] = useState("");
   const [tweetImageDisplay, setTweetImageDisplay] = useState({
@@ -21,11 +21,12 @@ function TweetBox() {
   const [emojiPicker, setEmojiPicker] = useState({
     display: "none",
   });
+  const el = useRef(null);
 
   const useStyles = makeStyles((theme) => ({
     medium: {
-      width: theme.spacing(6),
-      height: theme.spacing(6),
+      width: theme.spacing(5),
+      height: theme.spacing(5),
       cursor: "pointer",
     },
   }));
@@ -60,6 +61,9 @@ function TweetBox() {
       });
     }
   };
+  useOuterClick(el, () => {
+    closeEmojiPicker();
+  });
 
   const addEmoji = (e) => {
     setTweetMessage(tweetMessage + e.native);
@@ -68,23 +72,45 @@ function TweetBox() {
   const sendTweet = (e) => {
     e.preventDefault();
     if (tweetMessage === "" && tweetImage === "") return;
-    db.collection("posts").add({
-      displayName: "John Doe",
-      username: "johndoe",
-      verified: true,
-      text: tweetMessage,
-      image: tweetImage,
-      avatar:
-        "https://pbs.twimg.com/profile_images/997180500090351616/d0shaE6m_400x400.jpg",
-      createdAt: new Date(),
-      retweet: false,
-    });
+    if (!isComment) {
+      db.collection("posts").add({
+        displayName: "John Doe",
+        username: "johndoe",
+        verified: true,
+        text: tweetMessage,
+        image: tweetImage,
+        avatar:
+          "https://pbs.twimg.com/profile_images/997180500090351616/d0shaE6m_400x400.jpg",
+        createdAt: new Date(),
+        retweet: false,
+        liked: false,
+      });
+    } else {
+      db.collection("posts").doc(id.toString()).collection("comments").add({
+        displayName: "John Doe",
+        username: "johndoe",
+        verified: true,
+        text: tweetMessage,
+        image: tweetImage,
+        avatar:
+          "https://pbs.twimg.com/profile_images/997180500090351616/d0shaE6m_400x400.jpg",
+        createdAt: new Date(),
+        retweet: false,
+        liked: false,
+      });
+      handleClose();
+    }
     setTweetImage("");
     setTweetMessage("");
   };
 
   return (
-    <div className="tweetBox">
+    <div
+      className="tweetBox"
+      style={{
+        borderBottom: isModal ? "none" : "",
+      }}
+    >
       <form>
         <div className="tweetBox__input">
           <Avatar
@@ -96,7 +122,7 @@ function TweetBox() {
               value={tweetMessage}
               onChange={(e) => setTweetMessage(e.target.value)}
               type="text"
-              placeholder="What's happening?"
+              placeholder={isComment ? "Tweet your reply" : "What's happening?"}
             />
           </div>
         </div>
@@ -125,16 +151,15 @@ function TweetBox() {
             onClick={sendTweet}
             type="submit"
             className="tweetBox__tweetButton"
+            style={{
+              cursor: tweetMessage || tweetImage ? "pointer" : "auto",
+            }}
           >
-            Tweet
+            {isComment ? `Reply` : `Tweet`}
           </Button>
         </div>
       </form>
-      <OnOutsiceClick
-        onOutsideClick={(ev: Event) => {
-          closeEmojiPicker();
-        }}
-      >
+      <div ref={el}>
         <Picker
           style={emojiPicker}
           onSelect={addEmoji}
@@ -143,7 +168,7 @@ function TweetBox() {
           emoji="point_up"
           theme="dark"
         />
-      </OnOutsiceClick>
+      </div>
     </div>
   );
 }

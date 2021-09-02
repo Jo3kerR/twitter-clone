@@ -31,20 +31,22 @@ function Widgets() {
 
   return (
     <div className="widgets">
-      <div className="widgets__input">
-        <Search className="widgets__searchIcon" />
-        <input placeholder="Search Twitter" type="text" />
-      </div>
-      <div className="widgets__widgetContainer">
-        <h2>What's happening</h2>
-        {trends.map((trend) => (
-          <Trend
-            key={trend.key}
-            title={trend.title}
-            tweet__volume={trend.tweet__volume}
-          />
-        ))}
-        &nbsp;
+      <div className="sticky">
+        <div className="widgets__input">
+          <Search className="widgets__searchIcon" />
+          <input placeholder="Search Twitter" type="text" />
+        </div>
+        <div className="widgets__widgetContainer">
+          <h2>What's happening</h2>
+          {trends.map((trend) => (
+            <Trend
+              key={trend.key}
+              title={trend.title}
+              tweet__volume={trend.tweet__volume}
+            />
+          ))}
+          &nbsp;
+        </div>
       </div>
     </div>
   );
